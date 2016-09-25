@@ -1,6 +1,11 @@
 defmodule Excon do
 
-  @palette {:rgb, 8, [{136, 51, 0}, {255, 187, 119}, {255, 255, 187}, {255, 221, 136}]}
+  @palettes {
+    {:rgb, 8, [{136, 51, 0}, {255, 187, 119}, {255, 255, 187}, {255, 221, 136}]}, # Earthy
+    {:rgb, 8, [{105, 210, 231}, {167, 219, 216}, {224, 228, 204}, {250, 105, 0}]}, # Mayan
+    {:rgb, 8, [{28, 70, 107}, {187, 220, 195}, {111, 144, 181}, {105, 24, 146}]}, # Reef
+    {:rgb, 8, [{3, 112, 114}, {248, 222, 118}, {67, 239, 156}, {22, 201, 168}]}, # Bright
+  }
 
   def mirror(thing, dir), do: do_mirror(thing, dir, [])
   def do_mirror([], _, acc), do: acc |> Enum.reverse
@@ -32,14 +37,14 @@ defmodule Excon do
   def expand_row(_i, 0, acc), do: acc
   def expand_row(i, n, acc), do: expand_row(i, n-1, [i|acc])
 
-  def to_png(pattern, filename, mag) do
+  def to_png(pattern, filename, mag, pal) do
     {:ok, outfile} = File.open(filename<>".png", [:write])
    %{size: {8*mag,8*mag},
      mode: {:indexed,8},
      file: outfile,
-     palette: @palette} |> :png.create
-                        |> png_append_pattern(pattern |> magnify(mag))
-                        |> :png.close
+     palette: pal}  |> :png.create
+                    |> png_append_pattern(pattern |> magnify(mag))
+                    |> :png.close
    File.close(outfile)
   end
 
@@ -57,11 +62,13 @@ defmodule Excon do
 
   def ident(id,opts \\ []) do
     {fname, mag} = parse_options(opts)
-    id  |> Blake2.hash2b(4)
+    <<forpat::binary-size(4), forpal::integer-size(8)>> = id  |> Blake2.hash2b(5)
+
+    forpat
         |> hashtopat
         |> mirror(:ltr)
         |> mirror(:ttb)
-        |> to_png(fname, mag)
+        |> to_png(fname, mag, @palettes |> elem(rem(forpal,4)))
   end
 
 end
