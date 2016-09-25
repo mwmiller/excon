@@ -2,7 +2,7 @@ defmodule Excon do
 
   require Record
 
-  @palette {:rgb, 8, [{153, 204, 255}, {153, 153, 255}, {255, 153, 153}, {255, 204, 153}]}
+  @palette {:rgb, 8, [{136, 51, 0}, {255, 187, 119}, {255, 255, 187}, {255, 221, 136}]}
 
 
   def mirror(thing, dir), do: do_mirror(thing, dir, [])
