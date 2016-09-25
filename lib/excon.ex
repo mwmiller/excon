@@ -1,6 +1,9 @@
 defmodule Excon do
 
- @palette {:rgb, 8, [{153, 204, 255}, {153, 153, 255}, {255, 153, 153}, {255, 204, 153}]}
+  require Record
+
+  @palette {:rgb, 8, [{153, 204, 255}, {153, 153, 255}, {255, 153, 153}, {255, 204, 153}]}
+
 
   def mirror(thing, dir), do: do_mirror(thing, dir, [])
   def do_mirror([], _, acc), do: acc |> Enum.reverse
@@ -17,11 +20,29 @@ defmodule Excon do
   def do_hashtopat(<<>>, acc), do: acc |> Enum.reverse |> Enum.chunk(4)
   def do_hashtopat(<<t::integer-size(2),rest::bitstring>>, acc), do: do_hashtopat(rest,[t|acc])
 
-  def ident(str) do
-    str |> Blake2.hash2b(4)
+  def to_png(pattern, filename) do
+    {:ok, outfile} = File.open(filename<>".png", [:write])
+   %{size: {8,8},
+     mode: {:indexed,8},
+     file: outfile,
+     palette: @palette} |> :png.create
+                        |> png_append_pattern(pattern)
+                        |> :png.close
+   File.close(outfile)
+  end
+
+  def png_append_pattern(png, []), do: png
+  def png_append_pattern(png, [r|rest]) do
+    png |> :png.append({:row, :binary.list_to_bin(r)})
+        |> png_append_pattern(rest)
+  end
+
+  def ident(id,fname) do
+    id  |> Blake2.hash2b(4)
         |> hashtopat
         |> mirror(:ltr)
         |> mirror(:ttb)
+        |> to_png(fname)
   end
 
 end
