@@ -20,13 +20,29 @@ defmodule Excon do
   def do_hashtopat(<<>>, acc), do: acc |> Enum.reverse |> Enum.chunk(4)
   def do_hashtopat(<<t::integer-size(2),rest::bitstring>>, acc), do: do_hashtopat(rest,[t|acc])
 
-  def to_png(pattern, filename) do
+  def magnify(thing, how_much) do
+    thing |> expand_cols(how_much, [])
+          |> expand_rows(how_much, [])
+          |> IO.inspect
+  end
+
+  def expand_cols([], _n, acc), do: acc |> Enum.reverse
+  def expand_cols([r|rest], n, acc), do: expand_cols(rest,n,[expand_col(r,n,[])|acc])
+  def expand_col([], _n, acc), do: acc |> List.flatten |> Enum.reverse
+  def expand_col([c|rest], n, acc), do: expand_col(rest, n, [List.duplicate(c,n)|acc])
+
+  def expand_rows([], _n, acc), do: acc
+  def expand_rows([r|rest], n, acc), do: expand_rows(rest, n, Enum.concat(acc,expand_row(r, n, [])))
+  def expand_row(_i, 0, acc), do: acc
+  def expand_row(i, n, acc), do: expand_row(i, n-1, [i|acc])
+
+  def to_png(pattern, filename, mag) do
     {:ok, outfile} = File.open(filename<>".png", [:write])
-   %{size: {8,8},
+   %{size: {8*mag,8*mag},
      mode: {:indexed,8},
      file: outfile,
      palette: @palette} |> :png.create
-                        |> png_append_pattern(pattern)
+                        |> png_append_pattern(pattern |> magnify(mag))
                         |> :png.close
    File.close(outfile)
   end
@@ -37,12 +53,12 @@ defmodule Excon do
         |> png_append_pattern(rest)
   end
 
-  def ident(id,fname) do
+  def ident(id,fname,mag) do
     id  |> Blake2.hash2b(4)
         |> hashtopat
         |> mirror(:ltr)
         |> mirror(:ttb)
-        |> to_png(fname)
+        |> to_png(fname, mag)
   end
 
 end
