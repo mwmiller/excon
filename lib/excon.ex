@@ -1,9 +1,6 @@
 defmodule Excon do
 
-  require Record
-
   @palette {:rgb, 8, [{136, 51, 0}, {255, 187, 119}, {255, 255, 187}, {255, 221, 136}]}
-
 
   def mirror(thing, dir), do: do_mirror(thing, dir, [])
   def do_mirror([], _, acc), do: acc |> Enum.reverse
@@ -23,7 +20,6 @@ defmodule Excon do
   def magnify(thing, how_much) do
     thing |> expand_cols(how_much, [])
           |> expand_rows(how_much, [])
-          |> IO.inspect
   end
 
   def expand_cols([], _n, acc), do: acc |> Enum.reverse
@@ -53,7 +49,14 @@ defmodule Excon do
         |> png_append_pattern(rest)
   end
 
-  def ident(id,fname,mag) do
+  defp parse_options(options) do
+    { Keyword.get(options, :filename, "identicon"),
+      Keyword.get(options, :magnification, 4)
+    }
+  end
+
+  def ident(id,opts \\ []) do
+    {fname, mag} = parse_options(opts)
     id  |> Blake2.hash2b(4)
         |> hashtopat
         |> mirror(:ltr)
