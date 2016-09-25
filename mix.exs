@@ -16,7 +16,8 @@ defmodule Excon.Mixfile do
 
   defp deps do
   [
-    {:png, "~> 0.1.1"},
+    {:png, "~> 0.1"},
+    {:blake2, "~> 0.1"},
   ]
   end
 end

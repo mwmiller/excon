@@ -1,1 +1,2 @@
-%{"png": {:hex, :png, "0.1.1", "57eeab907d4c2b78d4c3803bc355af025248db9ebd612e4275c3cab65b809171", [:rebar], []}}
+%{"blake2": {:hex, :blake2, "0.1.2", "ed581c73aeb6ec961d70b01bc19943d5c2b29cd9635c37d9db3059713f6693c9", [:mix], []},
+  "png": {:hex, :png, "0.1.1", "57eeab907d4c2b78d4c3803bc355af025248db9ebd612e4275c3cab65b809171", [:rebar], []}}
