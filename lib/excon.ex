@@ -1,5 +1,7 @@
 defmodule Excon do
 
+ @palette {:rgb, 8, [{153, 204, 255}, {153, 153, 255}, {255, 153, 153}, {255, 204, 153}]}
+
   def mirror(thing, dir), do: do_mirror(thing, dir, [])
   def do_mirror([], _, acc), do: acc |> Enum.reverse
   def do_mirror([r|rows], :ltr, acc) do
