@@ -1,10 +1,10 @@
 defmodule Excon do
 
   @palettes {
-    {:rgb, 8, [{136, 51, 0}, {255, 187, 119}, {255, 255, 187}, {255, 221, 136}]}, # Earthy
-    {:rgb, 8, [{105, 210, 231}, {167, 219, 216}, {224, 228, 204}, {250, 105, 0}]}, # Mayan
-    {:rgb, 8, [{17, 110, 186}, {71, 175, 243}, {93, 93, 93}, {232, 232, 234}]}, # Inspired
-    {:rgb, 8, [{3, 112, 114}, {248, 222, 118}, {67, 239, 156}, {22, 201, 168}]}, # Bright
+    {:rgb, 8, [{0,153, 153}, {64, 179, 179}, {127, 204, 204}, {191, 229, 229}]},
+    {:rgb, 8, [{0, 152, 102}, {64, 178, 140}, {127, 203, 178}, {191, 229, 217}]},
+    {:rgb, 8, [{101, 44, 143}, {140, 97, 171}, {178, 149, 199}, {216, 202, 227}]},
+    {:rgb, 8, [{255, 204, 51}, {255, 217, 102}, {255, 229, 153}, {255, 242, 204}]},
   }
 
   defp mirror(thing, dir), do: do_mirror(thing, dir, [])
@@ -56,7 +56,7 @@ defmodule Excon do
 
   defp parse_options(options) do
     { Keyword.get(options, :filename, "identicon"),
-      Keyword.get(options, :magnification, 4)
+      Keyword.get(options, :magnification, 8)
     }
   end
 
