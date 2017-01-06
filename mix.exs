@@ -3,15 +3,15 @@ defmodule Excon.Mixfile do
 
   def project do
     [app: :excon,
-     version: "0.1.2",
-     elixir: "~> 1.3",
+     version: "0.1.3",
+     elixir: "~> 1.4",
      name: "excon",
      source_url: "https://github.com/mwmiller/excon",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     description: description,
-     package: package,
-     deps: deps]
+     description: description(),
+     package: package(),
+     deps: deps()]
   end
 
   def application do
