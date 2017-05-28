@@ -112,8 +112,8 @@ defmodule Excon do
     <svg width="#{8*mag}" height="#{8*mag}" version="1.1"
          xmlns="http://www.w3.org/2000/svg">
         <path d="M0,0 C#{t1x*mag},#{t1y*mag} #{t2x*mag},#{t2y*mag} #{8*mag},#{8*mag}" #{svg_fill(tc)} #{stroke} />
-        <path d="M0,#{8*mag} C#{b1x*mag},#{b1y*mag} #{b2x*mag},#{b2y*mag} #{8*mag},0"  #{svg_fill(mc)} />
-        <path d="M0,#{4*mag} C#{m1x*mag},#{m1y*mag} #{m2x*mag},#{m2y*mag} #{8*mag},#{4*mag}"   #{svg_fill(bc)} />
+        <path d="M0,#{8*mag} C#{b1x*mag},#{b1y*mag} #{b2x*mag},#{b2y*mag} #{8*mag},0"  #{svg_fill(mc)} #{stroke} />
+        <path d="M0,#{4*mag} C#{m1x*mag},#{m1y*mag} #{m2x*mag},#{m2y*mag} #{8*mag},#{4*mag}"   #{svg_fill(bc)} #{stroke} />
     </svg>
     """
   end
