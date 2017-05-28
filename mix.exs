@@ -3,7 +3,7 @@ defmodule Excon.Mixfile do
 
   def project do
     [app: :excon,
-     version: "1.0.1",
+     version: "2.0.0",
      elixir: "~> 1.4",
      name: "excon",
      source_url: "https://github.com/mwmiller/excon",
