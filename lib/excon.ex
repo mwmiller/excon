@@ -75,7 +75,7 @@ defmodule Excon do
   """
   def ident(id, opts \\ []) do
     {fname, mag, type} = parse_options(opts)
-    hash = Blake2.hash2b(id,5)
+    hash = Blake2.hash2b(id,6)
     case type do
       :png -> ident_png(hash, fname, mag)
       :svg -> ident_svg(hash, fname, mag)
@@ -84,7 +84,7 @@ defmodule Excon do
   end
 
   defp ident_png(hash, fname, mag) do
-    <<forpat::binary-size(4), forpal::integer-size(8)>> = hash
+    <<forpat::binary-size(4), forpal::integer-size(16)>> = hash
 
     forpat
         |> hashtopat
@@ -105,26 +105,27 @@ defmodule Excon do
       m2x::integer-size(3), m2y::integer-size(3),
       b1x::integer-size(3), b1y::integer-size(3),
       b2x::integer-size(3), b2y::integer-size(3),
-      forpal::integer-size(4) >> = hash
-    [tc,mc,bc,sc] = @palettes |> elem(rem(forpal,8)) |> elem(2)
-    stroke = svg_stroke(sc)
+      tci::integer-size(3), mci::integer-size(3), bci::integer-size(3),
+      pali::integer-size(2), stk::integer-size(1)
+     >> = hash
+    [tc,mc,bc] = Enum.map([tci, mci, bci], fn n -> @palettes |> elem(n) |> elem(2) end)
+    stroke = svg_stroke(stk)
     """
     <svg width="#{8*mag}" height="#{8*mag}" version="1.1"
          xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,0 C#{t1x*mag},#{t1y*mag} #{t2x*mag},#{t2y*mag} #{8*mag},#{8*mag}" #{svg_fill(tc)} #{stroke} />
-        <path d="M0,#{8*mag} C#{b1x*mag},#{b1y*mag} #{b2x*mag},#{b2y*mag} #{8*mag},0"  #{svg_fill(mc)} #{stroke} />
-        <path d="M0,#{4*mag} C#{m1x*mag},#{m1y*mag} #{m2x*mag},#{m2y*mag} #{8*mag},#{4*mag}"   #{svg_fill(bc)} #{stroke} />
+        <path d="M0,0 C#{t1x*mag},#{t1y*mag} #{t2x*mag},#{t2y*mag} #{8*mag},#{8*mag}" #{svg_fill(tc,pali)} #{stroke} />
+        <path d="M0,#{8*mag} C#{b1x*mag},#{b1y*mag} #{b2x*mag},#{b2y*mag} #{8*mag},0"  #{svg_fill(mc,pali)} #{stroke} />
+        <path d="M0,#{4*mag} C#{m1x*mag},#{m1y*mag} #{m2x*mag},#{m2y*mag} #{8*mag},#{4*mag}"   #{svg_fill(bc,pali)} #{stroke} />
     </svg>
     """
   end
 
-  defp svg_stroke(pal) do
-    octets = pal |> Tuple.to_list |> Enum.join(",")
-    "stroke=\"rgba(#{octets}, 1.0)\""
+  defp svg_stroke(stk) do
+    "stroke=\"rgba(#{if stk, do: "191,191,191", else: "64,64,64"}, 1.0)\""
   end
 
-  defp svg_fill(pal) do
-   octets =  pal |> Tuple.to_list |> Enum.join(",")
+  defp svg_fill(pal,w) do
+   octets =  pal |> Enum.fetch!(w) |> Tuple.to_list |> Enum.join(",")
    "fill=\"rgba(#{octets},0.50)\""
   end
 
