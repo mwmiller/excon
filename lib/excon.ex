@@ -103,13 +103,13 @@ defmodule Excon do
   end
 
   defp svg_contents(hash, mag) do
-    <<t1x::integer-size(3), t1y::integer-size(3),
+    <<t1x::integer-size(2), t1y::integer-size(3),
       t2x::integer-size(3), t2y::integer-size(3),
       m1x::integer-size(3), m1y::integer-size(3),
-      m2x::integer-size(3), m2y::integer-size(3),
+      m2x::integer-size(3), m2y::integer-size(2),
       b1x::integer-size(3), b1y::integer-size(3),
-      b2x::integer-size(3), b2y::integer-size(3),
-      tci::integer-size(3), mci::integer-size(3), bci::integer-size(3),
+      b2x::integer-size(3), b2y::integer-size(2),
+      tci::integer-size(4), mci::integer-size(4), bci::integer-size(4),
       pali::integer-size(2), stk::integer-size(1)
      >> = hash
     [tc,mc,bc] = Enum.map([tci, mci, bci], fn n -> @palettes |> elem(n) |> elem(2) end)
