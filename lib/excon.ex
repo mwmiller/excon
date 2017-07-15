@@ -123,7 +123,7 @@ defmodule Excon do
 
   defp svg_fill(pal,w,o) do
    octets =  pal |> Enum.fetch!(w) |> Tuple.to_list |> Enum.join(",")
-   "fill=\"rgba(#{octets},#{o/32})\""
+   "fill=\"rgba(#{octets},#{0.5+o/64})\""
   end
 
 end
