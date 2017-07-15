@@ -13,6 +13,10 @@ defmodule Excon do
     {:rgb, 8, [{255, 51, 204}, {255, 102, 217}, {255, 153, 229}, {255, 204, 242}]},
     {:rgb, 8, [{44, 101, 143}, {97, 140, 171}, {149, 178, 199}, {202, 216, 227}]},
     {:rgb, 8, [{153, 0, 153}, {179, 64, 179}, {204, 127, 204}, {229, 191, 229}]},
+    {:rgb, 8, [{255,128,33}, {255,169,20}, {245,197,161}, {244,210,184}]},
+    {:rgb, 8, [{250,187,187}, {250,203,187}, {255,219,184}, {250,250,162}]},
+    {:rgb, 8, [{240,192,216}, {240,168,192}, {254,237,255}, {216,240,240}]},
+    {:rgb, 8, [{12,120,113}, {33,156,133}, {72,168,130}, {118,176,122}]},
   }
 
   defp mirror(thing, dir), do: do_mirror(thing, dir, [])
@@ -94,7 +98,7 @@ defmodule Excon do
         |> hashtopat
         |> mirror(:ltr)
         |> mirror(:ttb)
-        |> to_png(fname, mag, @palettes |> elem(rem(forpal,12)))
+        |> to_png(fname, mag, @palettes |> elem(rem(forpal,16)))
 
   end
 
@@ -108,7 +112,7 @@ defmodule Excon do
       b1e::integer-size(2),  b2e::integer-size(2),  b3e::integer-size(2),  b4e::integer-size(2),
       b1ci::integer-size(4), b2ci::integer-size(4), b3ci::integer-size(4), b4ci::integer-size(4)
     >> = hash
-    [b1c,b2c,b3c,b4c] = Enum.map([b1ci, b2ci, b3ci, b4ci], fn n -> @palettes |> elem(n |> rem(12)) |> elem(2) end)
+    [b1c,b2c,b3c,b4c] = Enum.map([b1ci, b2ci, b3ci, b4ci], fn n -> @palettes |> elem(n) |> elem(2) end)
     stroke =  "stroke=\"rgba(191,191,191}, 1.0)\""
     """
     <svg width="#{8*mag}" height="#{8*mag}" version="1.1"
