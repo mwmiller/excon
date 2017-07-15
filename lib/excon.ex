@@ -79,7 +79,7 @@ defmodule Excon do
   """
   def ident(id, opts \\ []) do
     {fname, mag, type} = parse_options(opts)
-    hash = Blake2.hash2b(id,6)
+    hash = Blake2.hash2b(id,5)
     case type do
       :png -> ident_png(hash, fname, mag)
       :svg -> ident_svg(hash, fname, mag)
@@ -88,7 +88,7 @@ defmodule Excon do
   end
 
   defp ident_png(hash, fname, mag) do
-    <<forpat::binary-size(4), forpal::integer-size(16)>> = hash
+    <<forpat::binary-size(4), forpal::integer-size(8)>> = hash
 
     forpat
         |> hashtopat
@@ -104,7 +104,7 @@ defmodule Excon do
 
   defp svg_contents(hash, mag) do
     <<
-      b1o::integer-size(6),  b2o::integer-size(6),  b3o::integer-size(6),  b4o::integer-size(6),
+      b1o::integer-size(4),  b2o::integer-size(4),  b3o::integer-size(4),  b4o::integer-size(4),
       b1e::integer-size(2),  b2e::integer-size(2),  b3e::integer-size(2),  b4e::integer-size(2),
       b1ci::integer-size(4), b2ci::integer-size(4), b3ci::integer-size(4), b4ci::integer-size(4)
     >> = hash
@@ -123,7 +123,7 @@ defmodule Excon do
 
   defp svg_fill(pal,w,o) do
    octets =  pal |> Enum.fetch!(w) |> Tuple.to_list |> Enum.join(",")
-   "fill=\"rgba(#{octets},#{o/64})\""
+   "fill=\"rgba(#{octets},#{o/32})\""
   end
 
 end
