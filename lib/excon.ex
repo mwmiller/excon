@@ -130,16 +130,16 @@ defmodule Excon do
   end
 
   defp svg_bg(c,s,e) do
-    g = (c+1)*64 - 1
+    g = 127 + (c * 32)
 
     """
-    <path d="M#{s},#{s} L#{s},#{e} L#{e},#{e} L#{e},#{s} L#{s},#{s}" fill="rgb(#{g},#{g},#{g})" />
+    <path d="M#{s},#{s} L#{s},#{e} L#{e},#{e} L#{e},#{s} L#{s},#{s}" fill="rgba(#{g},#{g},#{g},0.25)" />
     """
   end
 
   defp svg_fill(pal,w,o) do
    octets =  pal |> Enum.fetch!(w) |> Tuple.to_list |> Enum.join(",")
-   "fill=\"rgba(#{octets},#{0.5+o/32}\""
+   "fill=\"rgba(#{octets},#{0.5+(o+1)/16}\""
   end
 
 end
