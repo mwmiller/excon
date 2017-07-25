@@ -108,12 +108,9 @@ defmodule Excon do
 
   defp svg_contents(hash, mag) do
     <<
-      b1o::integer-size(3),  b2o::integer-size(3),  b3o::integer-size(3),  b4o::integer-size(3),
-      b1e::integer-size(2),  b2e::integer-size(2),  b3e::integer-size(2),  b4e::integer-size(2),
-      b1ci::integer-size(4), b2ci::integer-size(4), b3ci::integer-size(4), b4ci::integer-size(4),
+      c1::bitstring-size(9), c2::bitstring-size(9), c3::bitstring-size(9), c4::bitstring-size(9),
       gap::integer-size(2),  bgc::integer-size(2)
     >> = hash
-    [b1c,b2c,b3c,b4c] = Enum.map([b1ci, b2ci, b3ci, b4ci], fn n -> @palettes |> elem(n) |> elem(2) end)
     [s,m,e] = Enum.map([0,gap+1,8], fn n -> n * mag end);
     m1 = s + m
     m2 = e - m
@@ -121,10 +118,10 @@ defmodule Excon do
     <svg width="#{e}" height="#{e}" version="1.1"
          xmlns="http://www.w3.org/2000/svg">
         #{svg_bg(bgc,s,e)}
-        <path d="M#{e},#{e} L#{s},#{m1} L#{s},#{e} L#{e},#{e}" #{svg_fill(b1c,b1e,b1o)} />
-        <path d="M#{s},#{e} L#{e},#{m1} L#{e},#{e} L#{s},#{e}" #{svg_fill(b2c,b2e,b2o)} />
-        <path d="M#{s},#{s} L#{e},#{m2} L#{e},#{s} L#{s},#{s}" #{svg_fill(b3c,b3e,b3o)} />
-        <path d="M#{e},#{s} L#{s},#{m2} L#{s},#{s} L#{e},#{s}" #{svg_fill(b4c,b4e,b4o)} />
+        <path d="M#{e},#{e} L#{s},#{m1} L#{s},#{e} L#{e},#{e}" #{svg_fill(c1)} />
+        <path d="M#{s},#{e} L#{e},#{m1} L#{e},#{e} L#{s},#{e}" #{svg_fill(c2)} />
+        <path d="M#{s},#{s} L#{e},#{m2} L#{e},#{s} L#{s},#{s}" #{svg_fill(c3)} />
+        <path d="M#{e},#{s} L#{s},#{m2} L#{s},#{s} L#{e},#{s}" #{svg_fill(c4)} />
     </svg>
     """
   end
@@ -137,8 +134,12 @@ defmodule Excon do
     """
   end
 
-  defp svg_fill(pal,w,o) do
-   octets =  pal |> Enum.fetch!(w) |> Tuple.to_list |> Enum.join(",")
+  defp svg_fill(<<ci::integer-size(4),w::integer-size(2),o::integer-size(3)>>) do
+    octets =  @palettes
+               |> elem(ci) |> elem(2)
+               |> Enum.fetch!(w)
+               |> Tuple.to_list
+               |> Enum.join(",")
    "fill=\"rgba(#{octets},#{0.5+(o+1)/16}\""
   end
 
