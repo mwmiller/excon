@@ -49,16 +49,21 @@ defmodule Excon do
   defp expand_row(_i, 0, acc), do: acc
   defp expand_row(i, n, acc), do: expand_row(i, n-1, [i|acc])
 
-  defp to_png(pattern, filename, mag, pal) do
+  defp to_png(pattern, filename, mag, pdx) do
     {:ok, outfile} = File.open(filename<>".png", [:write])
    %{size: {8*mag,8*mag},
      mode: {:indexed,8},
      file: outfile,
-     palette: {:rgb, 8, pal} }
+     palette: computed_pal(pdx) }
        |> :png.create
        |> png_append_pattern(pattern |> magnify(mag))
        |> :png.close
    File.close(outfile)
+  end
+
+
+  defp computed_pal(<<pi::integer-size(4), _unused::integer-size(4)>>) do
+    {:rgb, 8, @palettes |> elem(pi)}
   end
 
   defp png_append_pattern(png, []), do: png
@@ -93,13 +98,13 @@ defmodule Excon do
   end
 
   defp ident_png(hash, fname, mag) do
-    <<forpat::binary-size(4), forpal::integer-size(8)>> = hash
+    <<forpat::binary-size(4), forpal::bitstring-size(8)>> = hash
 
     forpat
         |> hashtopat
         |> mirror(:ltr)
         |> mirror(:ttb)
-        |> to_png(fname, mag, @palettes |> elem(rem(forpal,16)))
+        |> to_png(fname, mag, forpal)
 
   end
 
