@@ -74,7 +74,7 @@ defmodule Excon do
 
   defp parse_options(options) do
     { Keyword.get(options, :filename, "identicon"),
-      Keyword.get(options, :magnification, 8),
+      Keyword.get(options, :magnification, 4),
       Keyword.get(options, :type, :png),
     }
   end
