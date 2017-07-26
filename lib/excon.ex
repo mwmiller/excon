@@ -121,8 +121,7 @@ defmodule Excon do
     m1 = s + m
     m2 = e - m
     """
-    <svg width="#{e}" height="#{e}" version="1.1"
-         xmlns="http://www.w3.org/2000/svg">
+    <svg width="#{e}" height="#{e}" version="1.1" xmlns="http://www.w3.org/2000/svg">
         #{svg_bg(bgc,s,e)}
         <path d="M#{e},#{e} L#{s},#{m1} L#{s},#{e} L#{e},#{e}" #{svg_fill(c1)} />
         <path d="M#{s},#{e} L#{e},#{m1} L#{e},#{e} L#{s},#{e}" #{svg_fill(c2)} />
