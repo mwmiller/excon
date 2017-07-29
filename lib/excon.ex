@@ -49,18 +49,20 @@ defmodule Excon do
   defp expand_row(_i, 0, acc), do: acc
   defp expand_row(i, n, acc), do: expand_row(i, n-1, [i|acc])
 
-  defp to_png(pattern, filename, mag, pdx) do
-    {:ok, outfile} = File.open(filename<>".png", [:write])
-   %{size: {8*mag,8*mag},
-     mode: {:indexed,8},
-     file: outfile,
-     palette: computed_pal(pdx) }
-       |> :png.create
-       |> png_append_pattern(pattern |> magnify(mag))
-       |> :png.close
-   File.close(outfile)
+  defp to_png(pattern, mag, pdx) do
+    {:ok, pid} = Agent.start_link(fn -> [] end)
+    %{size: {8*mag,8*mag},
+      mode: {:indexed,8},
+      call: fn i -> Agent.update(pid, fn state -> [i|state] end) end,
+      palette: computed_pal(pdx) }
+        |> :png.create
+        |> png_append_pattern(pattern |> magnify(mag))
+        |> :png.close
+    Agent.get(pid, fn state -> state end)
+      |> List.flatten
+      |> Enum.reverse
+      |> Enum.join
   end
-
 
   defp computed_pal(<<pi::integer-size(4), _unused::integer-size(4)>>) do
     {:rgb, 8, @palettes |> elem(pi)}
@@ -73,7 +75,7 @@ defmodule Excon do
   end
 
   defp parse_options(options) do
-    { Keyword.get(options, :filename, "identicon"),
+    { Keyword.get(options, :filename, nil),
       Keyword.get(options, :magnification, 4),
       Keyword.get(options, :type, :png),
     }
@@ -84,35 +86,36 @@ defmodule Excon do
 
   Options
     - `type`: :png or :svg  (default: :png)
-    - `filename`: a string for the file name (default: "identicon")
+    - `filename`: a string for the file name (default: nil, image data is returned)
     - `magnification`: how many times to magnify the 8x8 pattern (default: 4)
   """
   def ident(id, opts \\ []) do
     {fname, mag, type} = parse_options(opts)
     hash = Blake2.hash2b(id,5)
-    case type do
-      :png -> ident_png(hash, fname, mag)
-      :svg -> ident_svg(hash, fname, mag)
+    img = case type do
+      :png -> ident_png(hash, mag)
+      :svg -> ident_svg(hash, mag)
       _    -> {:error, "Unknown file type"}
     end
+    output(img, fname, type)
   end
 
-  defp ident_png(hash, fname, mag) do
+  defp output(img, nil, _t), do: img
+  defp output(img, filename, type) do
+    :ok = File.write(filename<>"."<>Atom.to_string(type), img)
+  end
+
+  defp ident_png(hash, mag) do
     <<forpat::binary-size(4), forpal::bitstring-size(8)>> = hash
 
     forpat
         |> hashtopat
         |> mirror(:ltr)
         |> mirror(:ttb)
-        |> to_png(fname, mag, forpal)
-
+        |> to_png(mag, forpal)
   end
 
-  defp ident_svg(hash, fname, mag) do
-    File.write(fname<>".svg", svg_contents(hash,mag))
-  end
-
-  defp svg_contents(hash, mag) do
+  defp ident_svg(hash, mag) do
     <<
       c1::bitstring-size(9), c2::bitstring-size(9), c3::bitstring-size(9), c4::bitstring-size(9),
       gap::integer-size(2),  bgc::integer-size(2)
