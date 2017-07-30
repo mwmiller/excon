@@ -50,7 +50,8 @@ defmodule Excon do
   defp expand_row(i, n, acc), do: expand_row(i, n-1, [i|acc])
 
   defp to_png(pattern, mag, pdx) do
-    {:ok, pid} = Agent.start_link(fn -> [] end)
+    {:ok, pid} = Agent.start(fn -> [] end)
+
     %{size: {8*mag,8*mag},
       mode: {:indexed,8},
       call: fn i -> Agent.update(pid, fn state -> [i|state] end) end,
@@ -58,7 +59,11 @@ defmodule Excon do
         |> :png.create
         |> png_append_pattern(pattern |> magnify(mag))
         |> :png.close
-    Agent.get(pid, fn state -> state end)
+
+    img_data = Agent.get(pid, fn state -> state end)
+    Agent.stop(pid)
+
+    img_data
       |> List.flatten
       |> Enum.reverse
       |> Enum.join
