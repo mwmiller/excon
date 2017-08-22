@@ -32,11 +32,11 @@ defmodule ExconTest do
 
   test "svg" do
 
-    std = "<svg width=\"32\" height=\"32\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\">\n    <path d=\"M0,0 L0,32 L32,32 L32,0 L0,0\" fill=\"rgba(223,223,223,0.25)\" />\n\n    <path d=\"M32,32 L0,16 L0,32 L32,32\" fill=\"rgba(204,242,255,0.625\" />\n    <path d=\"M0,32 L32,16 L32,32 L0,32\" fill=\"rgba(178,127,203,0.875\" />\n    <path d=\"M0,0 L32,16 L32,0 L0,0\" fill=\"rgba(140,97,171,0.5625\" />\n    <path d=\"M32,0 L0,16 L0,0 L32,0\" fill=\"rgba(250,217,217,0.625\" />\n</svg>\n"
+    std = "<svg width=\"32\" height=\"32\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\">\n    <path d=\"M0,0 L0,32 L32,32 L32,0 L0,0\" fill=\"rgba(223, 223, 223, 0.25)\" />\n\n    <path d=\"M32,32 L0,16 L0,32 L32,32\" fill=\"rgba(204,242,255,0.625\" />\n    <path d=\"M0,32 L32,16 L32,32 L0,32\" fill=\"rgba(178,127,203,0.875\" />\n    <path d=\"M0,0 L32,16 L32,0 L0,0\" fill=\"rgba(140,97,171,0.5625\" />\n    <path d=\"M32,0 L0,16 L0,0 L32,0\" fill=\"rgba(250,217,217,0.625\" />\n</svg>\n"
 
     assert Excon.ident(@s, [type: :svg]) == std
 
-    big = "<svg width=\"64\" height=\"64\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\">\n    <path d=\"M0,0 L0,64 L64,64 L64,0 L0,0\" fill=\"rgba(223,223,223,0.25)\" />\n\n    <path d=\"M64,64 L0,32 L0,64 L64,64\" fill=\"rgba(204,242,255,0.625\" />\n    <path d=\"M0,64 L64,32 L64,64 L0,64\" fill=\"rgba(178,127,203,0.875\" />\n    <path d=\"M0,0 L64,32 L64,0 L0,0\" fill=\"rgba(140,97,171,0.5625\" />\n    <path d=\"M64,0 L0,32 L0,0 L64,0\" fill=\"rgba(250,217,217,0.625\" />\n</svg>\n"
+    big = "<svg width=\"64\" height=\"64\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\">\n    <path d=\"M0,0 L0,64 L64,64 L64,0 L0,0\" fill=\"rgba(223, 223, 223, 0.25)\" />\n\n    <path d=\"M64,64 L0,32 L0,64 L64,64\" fill=\"rgba(204,242,255,0.625\" />\n    <path d=\"M0,64 L64,32 L64,64 L0,64\" fill=\"rgba(178,127,203,0.875\" />\n    <path d=\"M0,0 L64,32 L64,0 L0,0\" fill=\"rgba(140,97,171,0.5625\" />\n    <path d=\"M64,0 L0,32 L0,0 L64,0\" fill=\"rgba(250,217,217,0.625\" />\n</svg>\n"
 
     assert Excon.ident(@s, [type: :svg, magnification: 8]) == big
   end
