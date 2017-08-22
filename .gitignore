@@ -17,3 +17,6 @@ erl_crash.dump
 *.ez
 *.swp
 *.beam
+
+# Also macOS nonsense
+.DS_Store
