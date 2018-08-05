@@ -97,7 +97,7 @@ defmodule Excon do
 
   defp parse_options(options) do
     {Keyword.get(options, :filename, nil), Keyword.get(options, :magnification, 4),
-     Keyword.get(options, :type, :png)}
+     Keyword.get(options, :type, :png), Keyword.get(options, :base64, false)}
   end
 
   @doc """
@@ -107,15 +107,17 @@ defmodule Excon do
     - `type`: :png or :svg  (default: :png)
     - `filename`: a string for the file name (default: nil, image data is returned)
     - `magnification`: how many times to magnify the 8x8 pattern (default: 4)
+    - `base64`: should output be base64 encoded (default: false, filename overrides)
   """
   def ident(id, opts \\ []) do
-    {fname, mag, type} = parse_options(opts)
-    output(ident(type,Blake2.hash2b(id, 5), mag), fname, type)
+    {fname, mag, type, b64} = parse_options(opts)
+    output(ident(type, Blake2.hash2b(id, 5), mag), fname, type, b64)
   end
 
-  defp output(img, nil, _t), do: img
+  defp output(img, nil, _t, true), do: img |> Base.encode64
+  defp output(img, nil, _t, false), do: img
 
-  defp output(img, filename, type) do
+  defp output(img, filename, type, _b64) do
     :ok = File.write(filename <> "." <> Atom.to_string(type), img)
   end
 
