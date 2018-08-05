@@ -133,45 +133,40 @@ defmodule Excon do
 
   defp ident(:svg, hash, mag) do
     <<
-      c1::bitstring-size(9),
-      c2::bitstring-size(9),
-      c3::bitstring-size(9),
-      c4::bitstring-size(9),
-      gap::integer-size(2),
-      bgc::integer-size(2)
+      cpo::integer-size(4),
+      cpe::integer-size(4),
+      bp::integer-size(2),
+      c1::bitstring-size(6),
+      c2::bitstring-size(6),
+      c3::bitstring-size(6),
+      c4::bitstring-size(6),
+      bc::bitstring-size(6)
     >> = hash
 
-    [s, m, e] = Enum.map([0, gap + 1, 8], fn n -> n * mag end)
-    m1 = s + m
-    m2 = e - m
+    odds = elem(@palettes, cpo)
+    evens = elem(@palettes, cpe)
+    bg = elem(@palettes, bp * 2)
 
     """
-    <svg width="#{e}" height="#{e}" version="1.1" xmlns="http://www.w3.org/2000/svg">
-        #{svg_bg(bgc, s, e)}
-        <path d="M#{e},#{e} L#{s},#{m1} L#{s},#{e} L#{e},#{e}" #{svg_fill(c1)} />
-        <path d="M#{s},#{e} L#{e},#{m1} L#{e},#{e} L#{s},#{e}" #{svg_fill(c2)} />
-        <path d="M#{s},#{s} L#{e},#{m2} L#{e},#{s} L#{s},#{s}" #{svg_fill(c3)} />
-        <path d="M#{e},#{s} L#{s},#{m2} L#{s},#{s} L#{e},#{s}" #{svg_fill(c4)} />
+    <svg width="#{8 * mag}" height="#{8 * mag}" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    #{do_circle(4, 4, 3, bc, mag, bg)}
+    #{do_circle(2, 2, 2, c1, mag, odds)}
+    #{do_circle(2, 6, 2, c2, mag, evens)}
+    #{do_circle(6, 6, 2, c3, mag, odds)}
+    #{do_circle(6, 2, 2, c4, mag, evens)}
     </svg>
     """
   end
 
-  defp svg_bg(c, s, e) do
-    g = 127 + c * 32
+  defp do_circle(x, y, r, c, mag, pal), do: "<circle cx=\"#{x * mag}\" cy=\"#{y * mag}\" r=\"#{r * mag}\" #{svg_fill(c, pal)}/>"
 
-    """
-    <path d="M#{s},#{s} L#{s},#{e} L#{e},#{e} L#{e},#{s} L#{s},#{s}" fill="rgba(#{g}, #{g}, #{g}, 0.25)" />
-    """
-  end
-
-  defp svg_fill(<<ci::integer-size(4), w::integer-size(2), o::integer-size(3)>>) do
+  defp svg_fill(<<w::integer-size(2), o::integer-size(4)>>, pal) do
     octets =
-      @palettes
-      |> elem(ci)
+      pal
       |> Enum.fetch!(w)
       |> Tuple.to_list()
       |> Enum.join(",")
 
-    "fill=\"rgba(#{octets},#{0.5 + (o + 1) / 16}\""
+    "fill=\"rgba(#{octets},#{0.5 + o / 16}\""
   end
 end
