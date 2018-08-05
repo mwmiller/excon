@@ -25,13 +25,11 @@ defmodule Excon do
   defp mirror(thing, dir), do: do_mirror(thing, dir, [])
   defp do_mirror([], _, acc), do: acc |> Enum.reverse()
 
-  defp do_mirror([r | rows], :ltr, acc) do
-    do_mirror(rows, :ltr, [r |> Enum.concat(r |> Enum.reverse()) | acc])
-  end
+  defp do_mirror([r | rows], :ltr, acc),
+    do: do_mirror(rows, :ltr, [r |> Enum.concat(r |> Enum.reverse()) | acc])
 
-  defp do_mirror([r | rows], :rtl, acc) do
-    do_mirror(rows, :rtl, [r |> Enum.reverse() |> Enum.concat(r) | acc])
-  end
+  defp do_mirror([r | rows], :rtl, acc),
+    do: do_mirror(rows, :rtl, [r |> Enum.reverse() |> Enum.concat(r) | acc])
 
   defp do_mirror(rows, :ttb, _), do: rows |> Enum.concat(Enum.reverse(rows))
   defp do_mirror(rows, :btt, _), do: rows |> Enum.reverse() |> Enum.concat(rows)
@@ -111,19 +109,20 @@ defmodule Excon do
   """
   def ident(id, opts \\ []) do
     {fname, mag, type, b64} = parse_options(opts)
-    output(ident(type, Blake2.hash2b(id, 5), mag), fname, type, b64)
+
+    id
+    |> Blake2.hash2b(5)
+    |> ident(type, mag)
+    |> output(fname, type, b64)
   end
 
-  defp output(img, nil, _t, true), do: img |> Base.encode64
+  defp output(img, nil, _t, true), do: img |> Base.encode64()
   defp output(img, nil, _t, false), do: img
 
-  defp output(img, filename, type, _b64) do
-    :ok = File.write(filename <> "." <> Atom.to_string(type), img)
-  end
+  defp output(img, filename, type, _b64),
+    do: :ok = File.write(filename <> "." <> Atom.to_string(type), img)
 
-  defp ident(:png, hash, mag) do
-    <<forpat::binary-size(4), forpal::bitstring-size(8)>> = hash
-
+  defp ident(<<forpat::binary-size(4), forpal::bitstring-size(8)>>, :png, mag) do
     forpat
     |> hashtopat
     |> mirror(:ltr)
@@ -131,17 +130,10 @@ defmodule Excon do
     |> to_png(mag, forpal)
   end
 
-  defp ident(:svg, hash, mag) do
-    <<
-      cpo::integer-size(4),
-      cpe::integer-size(4),
-      bp::integer-size(2),
-      c1::bitstring-size(6),
-      c2::bitstring-size(6),
-      c3::bitstring-size(6),
-      c4::bitstring-size(6),
-      bc::bitstring-size(6)
-    >> = hash
+  defp ident(hash, :svg, mag) do
+    <<cpo::integer-size(4), cpe::integer-size(4), bp::integer-size(2), c1::bitstring-size(6),
+      c2::bitstring-size(6), c3::bitstring-size(6), c4::bitstring-size(6),
+      bc::bitstring-size(6)>> = hash
 
     odds = elem(@palettes, cpo)
     evens = elem(@palettes, cpe)
@@ -158,15 +150,10 @@ defmodule Excon do
     """
   end
 
-  defp do_circle(x, y, r, c, mag, pal), do: "<circle cx=\"#{x * mag}\" cy=\"#{y * mag}\" r=\"#{r * mag}\" #{svg_fill(c, pal)}/>"
+  defp do_circle(x, y, r, c, mag, pal),
+    do: "<circle cx=\"#{x * mag}\" cy=\"#{y * mag}\" r=\"#{r * mag}\" #{svg_fill(c, pal)}/>"
 
-  defp svg_fill(<<w::integer-size(2), o::integer-size(4)>>, pal) do
-    octets =
-      pal
-      |> Enum.fetch!(w)
-      |> Tuple.to_list()
-      |> Enum.join(",")
-
-    "fill=\"rgba(#{octets},#{0.5 + o / 16}\""
-  end
+  defp svg_fill(<<w::integer-size(2), o::integer-size(4)>>, pal),
+    do:
+      "fill=\"rgba(#{pal |> Enum.fetch!(w) |> Tuple.to_list() |> Enum.join(",")},#{0.5 + o / 16}\""
 end
