@@ -37,13 +37,14 @@ defmodule Excon do
   defp do_mirror(rows, :btt, _), do: rows |> Enum.reverse() |> Enum.concat(rows)
 
   defp hashtopat(str), do: do_hashtopat(str, [])
-  defp do_hashtopat(<<>>, acc), do: acc |> Enum.reverse() |> Enum.chunk(4)
+  defp do_hashtopat(<<>>, acc), do: acc |> Enum.reverse() |> Enum.chunk_every(4)
 
   defp do_hashtopat(<<t::integer-size(2), rest::bitstring>>, acc),
     do: do_hashtopat(rest, [t | acc])
 
   defp magnify(thing, how_much) do
-    thing |> expand_cols(how_much, [])
+    thing
+    |> expand_cols(how_much, [])
     |> expand_rows(how_much, [])
   end
 
@@ -89,7 +90,8 @@ defmodule Excon do
   defp png_append_pattern(png, []), do: png
 
   defp png_append_pattern(png, [r | rest]) do
-    png |> :png.append({:row, :binary.list_to_bin(r)})
+    png
+    |> :png.append({:row, :binary.list_to_bin(r)})
     |> png_append_pattern(rest)
   end
 
