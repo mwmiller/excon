@@ -1,4 +1,5 @@
 defmodule Excon do
+  import DefMemo
   @moduledoc """
   Pure Elixir identicon creator
   """
@@ -153,18 +154,10 @@ defmodule Excon do
   defp do_circle(x, y, r, c, mag, pal),
     do: "<circle cx=\"#{x * mag}\" cy=\"#{y * mag}\" r=\"#{r * mag}\" #{svg_fill(c, pal)}/>"
 
-  defp do_path(
-         <<ys::integer-size(1), yf::integer-size(1), x1::integer-size(1), y1::integer-size(1),
-           x2::integer-size(1), y2::integer-size(1)>> = c,
-         mag,
-         pal
-       ),
-       do:
-         "<path d=\"M0,#{(ys * 4 + 4) * mag}  C#{x1 * 8 * mag},#{y1 * -2 * mag} #{x2 * -2 * mag},#{
-           y2 * 8 * mag
-         } #{8 * mag},#{(yf * 4 + 4) * mag}\" #{svg_fill(c, pal, 0.375)}/>"
+  defp do_path(<<ys::integer-size(1), yf::integer-size(1), x1::integer-size(1), y1::integer-size(1), x2::integer-size(1), y2::integer-size(1)>> = c , mag, pal),
+    do: "<path d=\"M0,#{(ys*4+4)*mag}  C#{x1*8*mag},#{y1*-2*mag} #{x2*-2*mag},#{y2*8*mag} #{8*mag},#{(yf*4+4)*mag}\" #{svg_fill(c,pal, 0.375)}/>"
 
   defp svg_fill(<<w::integer-size(2), o::integer-size(4)>>, pal, opbase \\ 0.5) do
-    "fill=\"rgba(#{pal |> Enum.fetch!(w) |> Tuple.to_list() |> Enum.join(",")},#{opbase + o / 32}\""
-  end
+      "fill=\"rgba(#{pal |> Enum.fetch!(w) |> Tuple.to_list() |> Enum.join(",")},#{opbase + o / 32}\""
+    end
 end
