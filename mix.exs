@@ -17,14 +17,13 @@ defmodule Excon.Mixfile do
   end
 
   def application do
-    [applications: [:defmemo]]
+    [applications: []]
   end
 
   defp deps do
     [
       {:png, "~> 0.1"},
       {:blake2, "~> 1.0"},
-      {:defmemo, "~> 0.1" },
       {:earmark, "~> 1.0", only: :dev},
       {:ex_doc, "~> 0.14", only: :dev},
       {:credo, "~> 1.0", only: [:dev, :test]}

@@ -1,5 +1,4 @@
 defmodule Excon do
-  import DefMemo
   @moduledoc """
   Pure Elixir identicon creator
   """
