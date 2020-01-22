@@ -12,3 +12,16 @@ Identicons from Elixir.
     end
     ```
 
+## Output 
+
+### PNG
+
+iex> Excon.ident("ExCon", filename: "excon", magnification: 16)
+
+![PNG](excon.png?raw=true "ExCon Ideniticon")
+
+### SVG
+
+iex> Excon.ident("ExCon", filename: "excon", type: :svg, magnification: 16)
+
+![SVG](excon.svg?raw=true "ExCon Identicon")
