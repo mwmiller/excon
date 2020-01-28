@@ -8,7 +8,7 @@ Identicons from Elixir.
 
     ```elixir
     def deps do
-      [{:excon, "~> 0.1"}]
+      [{:excon, "~> 4.0"}]
     end
     ```
 
@@ -16,12 +16,10 @@ Identicons from Elixir.
 
 ### PNG
 
-iex> Excon.ident("ExCon", filename: "excon", magnification: 16)
+iex> Excon.ident("Excon", filename: "Excon64", magnification: 8)
 
-![PNG](excon.png?raw=true "ExCon Ideniticon")
+![PNG](Excon64.png?raw=true "ExCon Identicon")
 
-### SVG
+iex> Excon.ident("Excon", base64: true, magnification: 8)
 
-iex> Excon.ident("ExCon", filename: "excon", type: :svg, magnification: 16)
-
-![SVG](excon.svg?raw=true "ExCon Identicon")
+"iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAADFBMVEX/gCH/qRT1xaH00rjuVoX9AAAAAklEQVR4nGKkkSsAAABfSURBVO3UKQ4AMQxD0S73v/OQJMCS2ZBa36yV80qirlvZlT4fiestgAjADW6JgwAyAB3UgntgFgkgAujMYlSuxPUAAABygC48/KUB/AC4ggLuAYAMQC8UcoOzSAAJwAe+BR0BwZDwWwAAAABJRU5ErkJggg=="

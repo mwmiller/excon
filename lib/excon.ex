@@ -109,10 +109,11 @@ defmodule Excon do
 
   ## Examples
 
-  iex> Excon.ident("ExCon", base64: true)
-  "iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAADFBMVEXwwNjmqNT62dn/0tL9+OiNAAAAAklEQVR4nGKkkSsAAABBSURBVGNghAJmIGCCAhAbJs5ABwUwDkiCAQpAbJgmeiiAM4AA7jAggGmklwKYJCygkMVGkoKBjovBkiZhnAHKmwBcxQWBMC75hwAAAABJRU5ErkJggg=="
-  iex> Excon.ident("ExCon", filename: "excon")
-  :ok
+      iex> Excon.ident("ExCon", base64: true)
+      "iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAADFBMVEXwwNjmqNT62dn/0tL9+OiNAAAAAklEQVR4nGKkkSsAAABBSURBVGNghAJmIGCCAhAbJs5ABwUwDkiCAQpAbJgmeiiAM4AA7jAggGmklwKYJCygkMVGkoKBjovBkiZhnAHKmwBcxQWBMC75hwAAAABJRU5ErkJggg=="
+
+      iex> Excon.ident("ExCon", filename: "excon")
+      :ok
   """
   def ident(id, opts \\ []) do
     {fname, mag, type, b64} = parse_options(opts)
