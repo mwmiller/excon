@@ -24,7 +24,6 @@ defmodule Excon.Mixfile do
     [
       {:png, "~> 0.1"},
       {:blake2, "~> 1.0"},
-      {:earmark, "~> 1.4", only: :dev},
       {:ex_doc, "~> 0.23", only: :dev},
     ]
   end
