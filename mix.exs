@@ -22,7 +22,7 @@ defmodule Excon.Mixfile do
 
   defp deps do
     [
-      {:png, "~> 0.1"},
+      {:png, "~> 0.2"},
       {:blake2, "~> 1.0"},
       {:ex_doc, "~> 0.23", only: :dev},
     ]
