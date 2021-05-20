@@ -4,7 +4,7 @@ defmodule Excon.Mixfile do
   def project do
     [
       app: :excon,
-      version: "4.0.0",
+      version: "4.0.1",
       elixir: "~> 1.7",
       name: "excon",
       source_url: "https://github.com/mwmiller/excon",
@@ -12,7 +12,8 @@ defmodule Excon.Mixfile do
       start_permanent: Mix.env() == :prod,
       description: description(),
       package: package(),
-      deps: deps()
+      deps: deps(),
+      xref: [exclude: [Blake2, :png]]
     ]
   end
 
@@ -24,7 +25,7 @@ defmodule Excon.Mixfile do
     [
       {:png, "~> 0.2"},
       {:blake2, "~> 1.0"},
-      {:ex_doc, "~> 0.23", only: :dev},
+      {:ex_doc, "~> 0.23", only: :dev}
     ]
   end
 
