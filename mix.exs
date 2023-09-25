@@ -4,8 +4,8 @@ defmodule Excon.Mixfile do
   def project do
     [
       app: :excon,
-      version: "4.0.1",
-      elixir: "~> 1.7",
+      version: "4.0.2",
+      elixir: "~> 1.15",
       name: "excon",
       source_url: "https://github.com/mwmiller/excon",
       build_embedded: Mix.env() == :prod,
@@ -18,7 +18,7 @@ defmodule Excon.Mixfile do
   end
 
   def application do
-    [applications: []]
+    [applications: [:png, :blake2]]
   end
 
   defp deps do
