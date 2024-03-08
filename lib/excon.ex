@@ -148,7 +148,7 @@ defmodule Excon do
     fg = elem(@palettes, fp)
 
     """
-    <svg width="#{8 * mag}" height="#{8 * mag}" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <svg width="#{8 * mag}" height="#{8 * mag}" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 #{8 * mag} #{8 * mag}">
     #{do_circle(2, 2, 2, c1, mag, odds)}
     #{do_circle(2, 6, 2, c2, mag, evens)}
     #{do_circle(6, 6, 2, c3, mag, odds)}
