@@ -1,10 +1,10 @@
-defmodule Excon.Mixfile do
+defmodule Excon.MixProject do
   use Mix.Project
 
   def project do
     [
       app: :excon,
-      version: "4.0.4",
+      version: "4.0.5",
       elixir: "~> 1.15",
       name: "excon",
       source_url: "https://github.com/mwmiller/excon",
@@ -18,7 +18,7 @@ defmodule Excon.Mixfile do
   end
 
   def application do
-    [applications: [:png, :blake2]]
+    [extra_applications: [:png, :blake2]]
   end
 
   defp deps do
