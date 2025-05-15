@@ -31,7 +31,7 @@ defmodule Excon.MixProject do
 
   defp description do
     """
-    excon - pure Elixir identicons
+    PNG/SVG identicons in pure Elixir.
     """
   end
 
