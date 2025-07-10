@@ -1,13 +1,16 @@
 defmodule Excon.ImageMaker.PNG do
   @behaviour Excon.ImageMaker
   @moduledoc """
-  The PNG interface for ExCon.
+  The :png interface for ExCon.
+
+  With left-to-right and top-to-bottom symmetry and a four color palette,
+  these look a bit like 8-bit graphics.
   """
 
   alias Excon.PNGUtils
   def create_image(hash, mag)
 
-  def create_image(<<forpat::binary-size(4), forpal::bitstring-size(4), _unused::size(4)>>, mag) do
+  def create_image(<<forpat::binary-size(4), forpal::integer-size(4), _unused::size(4)>>, mag) do
     img =
       forpat
       |> hashtopat

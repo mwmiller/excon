@@ -61,7 +61,7 @@ defmodule Excon.PNGUtils do
   defp do_mirror(rows, :ttb, _), do: rows |> Enum.concat(Enum.reverse(rows))
   defp do_mirror(rows, :btt, _), do: rows |> Enum.reverse() |> Enum.concat(rows)
 
-  defp computed_pal(<<pi::integer-size(4), _rest::binary>>) do
+  defp computed_pal(pi) do
     {:rgb, 8, Palettes.get(pi)}
   end
 
