@@ -1,6 +1,6 @@
 # Excon
 
-Identicons from Elixir.
+Identicons in Elixir.
 
 ## Installation
 
@@ -12,14 +12,23 @@ Identicons from Elixir.
     end
     ```
 
-## Output 
+## Output
 
 ### PNG
 
-iex> Excon.ident("Excon", filename: "Excon64", magnification: 8)
+iex> Excon.ident("excon", filename: "excon64", magnification: 8)
 
-![PNG](Excon64.png?raw=true "ExCon Identicon")
+![PNG](excon64.png?raw=true "excon Identicon")
 
-iex> Excon.ident("Excon", base64: true, magnification: 8)
+iex> Excon.ident("excon", filename: "excon32", magnification: 4, type: :duopng)
 
-"iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAADFBMVEX/gCH/qRT1xaH00rjuVoX9AAAAAklEQVR4nGKkkSsAAABfSURBVO3UKQ4AMQxD0S73v/OQJMCS2ZBa36yV80qirlvZlT4fiestgAjADW6JgwAyAB3UgntgFgkgAujMYlSuxPUAAABygC48/KUB/AC4ggLuAYAMQC8UcoOzSAAJwAe+BR0BwZDwWwAAAABJRU5ErkJggg=="
+![PNG](excon32.png?raw=true "excon Identicon")
+
+### SVG
+iex> Excon.ident("excon", filename: "excon64", magnification: 8, type: :svg)
+
+![SVG](excon64.svg?raw=true "excon Identicon")
+
+iex> Excon.ident("excon", filename: "excon32", magnification: 4, type: :framesvg)
+
+![SVG](excon32.svg?raw=true "excon Identicon")
