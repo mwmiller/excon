@@ -26,7 +26,7 @@ defmodule Excon do
   def ident(id, opts \\ []) do
     o = Keyword.merge(@default_options, opts)
 
-    handler = Module.safe_concat([Excon, String.upcase(Atom.to_string(o[:type]))])
+    handler = Module.safe_concat([Excon, ImageMaker, String.upcase(Atom.to_string(o[:type]))])
 
     id
     |> Blake2.hash2b(5)

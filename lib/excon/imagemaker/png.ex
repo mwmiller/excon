@@ -1,4 +1,4 @@
-defmodule Excon.PNG do
+defmodule Excon.ImageMaker.PNG do
   @behaviour Excon.ImageMaker
   @moduledoc """
   The PNG interface for ExCon.

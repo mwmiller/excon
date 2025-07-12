@@ -1,4 +1,4 @@
-defmodule Excon.SVG do
+defmodule Excon.ImageMaker.SVG do
   @behaviour Excon.ImageMaker
   @moduledoc """
   The SVG interface for ExCon.
