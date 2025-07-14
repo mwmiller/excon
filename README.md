@@ -8,7 +8,7 @@ Add `excon` to your list of dependencies in `mix.exs`:
 
     ```elixir
     def deps do
-      [{:excon, "~> 4.0"}]
+      [{:excon, "~> 4.1"}]
     end
     ```
 
