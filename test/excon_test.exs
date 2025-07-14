@@ -40,4 +40,28 @@ defmodule ExconTest do
 
     assert Excon.ident(@s, type: :svg, magnification: 8) == big
   end
+
+  test "duotone" do
+    std =
+      "\x89PNG\r\n\x1A\n\0\0\0\rIHDR\0\0\0 \0\0\0 \b\x03\0\0\0D\xA4\x8A\xC6\0\0\0\fPLTE,e\x8Fa\x8C\xAB\x95\xB2\xC7\xCA\xD8\xE34\x93\xAE\x87\0\0\0\x02IDATx\x9Cb\xA4\x91+\0\0\0=IDATc`\0\x02F\x1C\x80\x01\x06h\xAC\0C5\x9A\xA6\x91\xA2\0\xC6A\x17\xC4\bI:)@w$\xBD\x14 K\xA2\a\x1A<$i\xAC\0\xDDa\xD8\x1CLk\x05\xE8\x11\x84\xC1\xA6\xBD\x02\0U\xDC\x02\x01r\x99\x85\x05\0\0\0\0IEND\xAEB`\x82"
+
+    assert Excon.ident(@s, type: :duotone) == std
+
+    tiny =
+      "\x89PNG\r\n\x1A\n\0\0\0\rIHDR\0\0\0\b\0\0\0\b\b\x03\0\0\0\xF3\xD1N\xB9\0\0\0\fPLTE,e\x8Fa\x8C\xAB\x95\xB2\xC7\xCA\xD8\xE34\x93\xAE\x87\0\0\0\x02IDATx\x9Cb\xA4\x91+\0\0\0 IDATc``\x04\x03\x06\x06\x10\x06\x93p\x06\x03\x98\r\xE2AD \x88\x11\xC6ER\xCF\xC8\b\0\x04\xFE\0!\x99\x8F\xFE\xA3\0\0\0\0IEND\xAEB`\x82"
+
+    assert Excon.ident(@s, type: :duotone, magnification: 1) == tiny
+  end
+
+  test "framed" do
+    std =
+      "<svg width=\"32\" height=\"32\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 32 32\">\n<rect width=\"100%\" height=\"100%\" fill=\"#BFE5D9\" stroke=\"#009866\" />\n<path d=\"M 12,8 28,0 4,12 24,20 4,16 0,28 28,28 20,12\" stroke=\"#7FCBB2\" stroke-width=\"1\" fill=\"#40B28C\" />\n\n</svg>\n"
+
+    assert Excon.ident(@s, type: :framed) == std
+
+    big =
+      "<svg width=\"64\" height=\"64\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\">\n<rect width=\"100%\" height=\"100%\" fill=\"#BFE5D9\" stroke=\"#009866\" />\n<path d=\"M 24,16 56,0 8,24 48,40 8,32 0,56 56,56 40,24\" stroke=\"#7FCBB2\" stroke-width=\"1\" fill=\"#40B28C\" />\n\n</svg>\n"
+
+    assert Excon.ident(@s, type: :framed, magnification: 8) == big
+  end
 end
