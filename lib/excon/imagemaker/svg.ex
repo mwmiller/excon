@@ -1,9 +1,10 @@
-defmodule Excon.ImageMaker.SVG do
+defmodule Excon.ImageMaker.Svg do
   @behaviour Excon.ImageMaker
   @moduledoc """
   The :svg interface for ExCon.
 
-  With background circles and an abstract path, these look a bit like Slack identicons.
+  With background circles and an abstract path, these SVGs
+  look a bit like Slack identicons.
   """
 
   alias Excon.Palettes

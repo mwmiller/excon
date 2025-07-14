@@ -1,10 +1,10 @@
-defmodule Excon.ImageMaker.PNG do
+defmodule Excon.ImageMaker.Png do
   @behaviour Excon.ImageMaker
   @moduledoc """
   The :png interface for ExCon.
 
   With left-to-right and top-to-bottom symmetry and a four color palette,
-  these look a bit like 8-bit graphics.
+  these PNGs look like 8-bit graphics.
   """
 
   alias Excon.PNGUtils

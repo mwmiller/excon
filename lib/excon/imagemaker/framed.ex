@@ -1,10 +1,10 @@
-defmodule Excon.ImageMaker.FRAMESVG do
+defmodule Excon.ImageMaker.Framed do
   @behaviour Excon.ImageMaker
   @moduledoc """
-  The :framesvg interface for ExCon.
+  The :framed interface for ExCon.
 
-  With a four-color palette and a permuted path these look a bit
-  like framed abstract art.
+  With a four-color palette and a permuted path these
+  SVGs look a bit like framed abstract art.
   """
 
   alias Excon.Palettes

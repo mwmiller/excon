@@ -4,7 +4,7 @@ Identicons in Elixir.
 
 ## Installation
 
-  1. Add `excon` to your list of dependencies in `mix.exs`:
+Add `excon` to your list of dependencies in `mix.exs`:
 
     ```elixir
     def deps do
@@ -20,7 +20,7 @@ iex> Excon.ident("excon", filename: "excon64", magnification: 8)
 
 ![PNG](excon64.png?raw=true "excon Identicon")
 
-iex> Excon.ident("excon", filename: "excon32", magnification: 4, type: :duopng)
+iex> Excon.ident("excon", filename: "excon32", magnification: 4, type: :duotone)
 
 ![PNG](excon32.png?raw=true "excon Identicon")
 
@@ -29,6 +29,6 @@ iex> Excon.ident("excon", filename: "excon64", magnification: 8, type: :svg)
 
 ![SVG](excon64.svg?raw=true "excon Identicon")
 
-iex> Excon.ident("excon", filename: "excon32", magnification: 4, type: :framesvg)
+iex> Excon.ident("excon", filename: "excon32", magnification: 4, type: :framed)
 
 ![SVG](excon32.svg?raw=true "excon Identicon")

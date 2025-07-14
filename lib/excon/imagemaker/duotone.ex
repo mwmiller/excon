@@ -1,17 +1,18 @@
-defmodule Excon.ImageMaker.DUOPNG do
+defmodule Excon.ImageMaker.Duotone do
   @behaviour Excon.ImageMaker
   @moduledoc """
-  The :duopng interface for ExCon.
+  The :duotone interface for ExCon.
 
-  With left--to-right symmetry and a two color palette these look a bit like GitHub identicons.
+  With left--to-right symmetry and a two color palette these
+  PNGs look a bit like GitHub identicons.
   """
 
   alias Excon.PNGUtils
   def create_image(hash, mag)
 
   def create_image(
-        <<forpat::binary-size(4), forpal::integer-size(4), fi::integer-size(2),
-          si::integer-size(2)>>,
+        <<forpat::binary-size(4), fi::integer-size(2), si::integer-size(2),
+          forpal::integer-size(4)>>,
         mag
       ) do
     # We have to reduce the entropy a bit because some of these palettes
