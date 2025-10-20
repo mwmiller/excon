@@ -18,7 +18,7 @@ defmodule Excon.PNGUtils do
       palette: computed_pal(pdx)
     }
     |> :png.create()
-    |> png_append_pattern(pattern |> magnify(mag))
+    |> :png.append({:rows, pattern |> magnify(mag)})
     |> :png.close()
 
     img_data = Agent.get(pid, fn state -> state end)
@@ -63,13 +63,5 @@ defmodule Excon.PNGUtils do
 
   defp computed_pal(pi) do
     {:rgb, 8, Palettes.get(pi)}
-  end
-
-  defp png_append_pattern(png, []), do: png
-
-  defp png_append_pattern(png, [r | rest]) do
-    png
-    |> :png.append({:row, :binary.list_to_bin(r)})
-    |> png_append_pattern(rest)
   end
 end
