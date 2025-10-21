@@ -19,7 +19,7 @@ defmodule Excon do
       iex> Excon.ident("ExCon", base64: true)
       "iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAADFBMVEXwwNjmqNT62dn/0tL9+OiNAAAAAklEQVR4nGKkkSsAAABBSURBVGNghAJmIGCCAhAbJs5ABwUwDkiCAQpAbJgmeiiAM4AA7jAggGmklwKYJCygkMVGkoKBjovBkiZhnAHKmwBcxQWBMC75hwAAAABJRU5ErkJggg=="
 
-      iex> Excon.ident("ExCon", maginification: 8, filename: "Excon64")
+      iex> Excon.ident("excon", magnification: 8, filename: "excon64")
       :ok
   """
   @default_options [filename: nil, magnification: 4, type: :png, base64: false]
