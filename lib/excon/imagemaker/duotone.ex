@@ -37,15 +37,7 @@ defmodule Excon.ImageMaker.Duotone do
 
   defp hashtopat(string, first_index, first_index) do
     # They are both the same color, so we move the second index.
-    second_index =
-      case first_index do
-        0 -> 3
-        1 -> 0
-        2 -> 1
-        3 -> 2
-      end
-
-    hashtopat(string, first_index, second_index)
+    hashtopat(string, first_index, rem(first_index + 3, 4))
   end
 
   defp hashtopat(string, first_index, second_index) do
